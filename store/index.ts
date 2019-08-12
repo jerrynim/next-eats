@@ -1,11 +1,12 @@
 import { createStore, combineReducers, applyMiddleware } from "redux";
 import { composeWithDevTools } from "redux-devtools-extension";
-import * as chart from "./chart";
+import * as menu from "./menu";
 import createSagaMiddleware from "redux-saga";
-
+import chart from "./chart";
 const sagaMiddleware = createSagaMiddleware();
-const chartReducer = chart.chart;
+const chartReducer = menu.menu;
 const reducer = combineReducers({
+  chart,
   chartReducer
 });
 
@@ -16,4 +17,4 @@ export const store = createStore(
 );
 
 // then run the saga
-sagaMiddleware.run(chart.saga);
+sagaMiddleware.run(menu.saga);

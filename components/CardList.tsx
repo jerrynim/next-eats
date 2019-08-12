@@ -1,7 +1,13 @@
 import React, { useEffect } from "react";
 import styled from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
-import { Menu } from "../store/chart";
+import { TriggerGetMenu } from "../store/menu";
+import {
+  Chart,
+  IncreaseHNum,
+  IncreasePNum,
+  IncreaseSNum
+} from "../store/chart";
 const Container = styled.div`
   display: flex;
   flex-direction: column;
@@ -39,26 +45,72 @@ const CardList: React.FC = () => {
   const menus = useSelector((state: any) => state.chartReducer);
   const dispatch = useDispatch();
 
+  const chart: Chart = useSelector((state: any) => state.chart);
+
   useEffect(() => {
-    dispatch({ type: "chart/TRIGGER_GET_MENU" });
+    dispatch<TriggerGetMenu>({ type: "menu/TRIGGER_GET_MENU" });
   }, []);
+
   return (
     <Container>
-      {menus.length > 0 &&
-        menus.map((menu: Menu, index: number) => (
-          <Card key={index}>
-            <Image src={menu.image} />
-            <Name>{menu.name}</Name>
-            <Price>₩{menu.price}</Price>
+      {menus.length > 0 && (
+        <>
+          <Card>
+            <Image src={menus[0].image} />
+            <Name>{menus[0].name}</Name>
+            <Price>₩{menus[0].price}</Price>
             <CountBox>
-              <Count>0</Count>
+              <Count>{chart.hamburgerNum}</Count>
               <Buttons>
-                <button>+</button>
+                <button
+                  onClick={() =>
+                    dispatch<IncreaseHNum>({ type: "chart/INCREASE_H_NUM" })
+                  }
+                >
+                  +
+                </button>
                 <button>-</button>
               </Buttons>
             </CountBox>
           </Card>
-        ))}
+          <Card>
+            <Image src={menus[1].image} />
+            <Name>{menus[1].name}</Name>
+            <Price>₩{menus[1].price}</Price>
+            <CountBox>
+              <Count>{chart.pizzaNum}</Count>
+              <Buttons>
+                <button
+                  onClick={() =>
+                    dispatch<IncreasePNum>({ type: "chart/INCREASE_P_NUM" })
+                  }
+                >
+                  +
+                </button>
+                <button>-</button>
+              </Buttons>
+            </CountBox>
+          </Card>
+          <Card>
+            <Image src={menus[2].image} />
+            <Name>{menus[2].name}</Name>
+            <Price>₩{menus[2].price}</Price>
+            <CountBox>
+              <Count>{chart.saladNum}</Count>
+              <Buttons>
+                <button
+                  onClick={() =>
+                    dispatch<IncreaseSNum>({ type: "chart/INCREASE_S_NUM" })
+                  }
+                >
+                  +
+                </button>
+                <button>-</button>
+              </Buttons>
+            </CountBox>
+          </Card>
+        </>
+      )}
     </Container>
   );
 };

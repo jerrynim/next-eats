@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { useSelector } from "react-redux";
 
 const Container = styled.div`
   margin-left: 50px;
@@ -25,26 +26,28 @@ const Bar = styled.div`
 `;
 const Count = styled.p``;
 const Chart: React.FC = () => {
+  const chart = useSelector((state: any) => state.chart);
+
   return (
     <Container>
       <Nmae>장바구니</Nmae>
       <Bar />
       <FlexBox>
         <Nmae>salad</Nmae>
-        <Count>0</Count>
+        <Count>{chart.saladNum}</Count>
       </FlexBox>
       <FlexBox>
         <Nmae>pizza</Nmae>
-        <Count>0</Count>
+        <Count>{chart.pizzaNum}</Count>
       </FlexBox>
       <FlexBox>
         <Nmae>hamburger</Nmae>
-        <Count>0</Count>
+        <Count>{chart.hamburgerNum}</Count>
       </FlexBox>
       <Bar />
       <FlexBox>
         <Nmae>총계</Nmae>
-        <Count>0</Count>
+        <Count>{chart.total}</Count>
       </FlexBox>
     </Container>
   );
