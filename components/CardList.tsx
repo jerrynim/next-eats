@@ -1,7 +1,7 @@
-import React from "react";
-
+import React, { useEffect } from "react";
 import styled from "styled-components";
-
+import { useSelector, useDispatch } from "react-redux";
+import { Menu } from "../store/chart";
 const Container = styled.div`
   display: flex;
   flex-direction: column;
@@ -15,11 +15,11 @@ const Container = styled.div`
 const Card = styled.div`
   margin-bottom: 10px;
 `;
-const Image = styled.div`
+const Image = styled.div<{ src: string }>`
   width: 200px;
   height: 120px;
   background-size: cover;
-  background-image: url("https://www.medicalnewstoday.com/content//images/articles/324/324956/close-up-of-a-plate-of-food.jpg");
+  background-image: url(${(props) => props.src});
 `;
 const Name = styled.h4`
   margin: 10px 0px;
@@ -36,45 +36,29 @@ const CountBox = styled.div`
 const Buttons = styled.div``;
 const Price = styled.span``;
 const CardList: React.FC = () => {
+  const menus = useSelector((state: any) => state.chartReducer);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch({ type: "chart/TRIGGER_GET_MENU" });
+  }, []);
   return (
     <Container>
-      <Card>
-        <Image />
-        <Name>Hamburger</Name>
-        <Price>₩6000</Price>
-
-        <CountBox>
-          <Count>0</Count>
-          <Buttons>
-            <button>+</button>
-            <button>-</button>
-          </Buttons>
-        </CountBox>
-      </Card>
-      <Card>
-        <Image />
-        <Name>pizza</Name>
-        <Price>₩8000</Price>
-        <CountBox>
-          <Count>0</Count>
-          <Buttons>
-            <button>+</button>
-            <button>-</button>
-          </Buttons>
-        </CountBox>
-      </Card>
-      <Card>
-        <Image />
-        <Name>salad</Name>
-        <Price>₩7000</Price>
-        <CountBox>
-          <Count>0</Count>
-          <Buttons>
-            <button>+</button>
-            <button>-</button>
-          </Buttons>
-        </CountBox>
-      </Card>
+      {menus.length > 0 &&
+        menus.map((menu: Menu, index: number) => (
+          <Card key={index}>
+            <Image src={menu.image} />
+            <Name>{menu.name}</Name>
+            <Price>₩{menu.price}</Price>
+            <CountBox>
+              <Count>0</Count>
+              <Buttons>
+                <button>+</button>
+                <button>-</button>
+              </Buttons>
+            </CountBox>
+          </Card>
+        ))}
     </Container>
   );
 };
